@@ -37,6 +37,8 @@ class Installer:
         self.clone_graphdeco()
         self.checkout_graphdeco()
         self.install_graphdeco_requirements()
+        self.compile_submodules()
+        self.verify_graphdeco()
         self.verify_ffmpeg()
         self.verify_colmap()
         self.summary()
@@ -44,7 +46,7 @@ class Installer:
     def run_command(self, command, cwd=None):
 
         result = subprocess.run(
-            command, cwd=cwd, text=True, capture_output=True
+            command, cwd=cwd, check=True
         )
         if result.returncode!=0:
             raise RuntimeError(result.stderr)
@@ -119,3 +121,37 @@ class Installer:
         version = output.splitlines()[0]
 
         success(version)
+
+    def compile_submodules(self):
+
+        info("Compiling GraphDECO CUDA extensions...")
+
+        submodules = [
+            "submodules/diff-gaussian-rasterization",
+            "submodules/simple-knn",
+            "submodules/fused-ssim"
+        ]
+
+        for module in submodules:
+
+            info(f"Installing {module}...")
+
+            self.run_command([
+                "pip",
+                "install",
+                module
+            ], cwd=GRAPHDECO)
+
+        success("CUDA extensions compiled.")
+
+    def verify_graphdeco(self):
+
+        info("Verifying GraphDECO...")
+
+        self.run_command([
+            "python",
+            "-c",
+            "import gaussian_renderer; print('GraphDECO OK')"
+        ], cwd=GRAPHDECO)
+
+        success("GraphDECO verified.")
