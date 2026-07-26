@@ -19,13 +19,10 @@ class Installer:
         else:
             raise RuntimeError("Unsupported runtime. Please use Kaggle or Colab.")
 
-        success(f"Runtime:{self.runtime}")
-
     def detect_gpu(self):
         if not torch.cuda.is_available():
             raise RuntimeError("GPU not available. Please enable GPU in the runtime settings.")
         self.gpu_name = torch.cuda.get_device_name(0)
-        success(f"GPU:{self.gpu_name}")
 
     def summary(self):
         info("----------------------------------------")
