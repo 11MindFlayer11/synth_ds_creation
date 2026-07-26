@@ -151,8 +151,7 @@ class Installer:
 
         self.run_command([
             "python",
-            "-c",
-            "import gaussian_renderer; print('GraphDECO OK')"
+            "train.py", "-h"
         ], cwd=GRAPHDECO)
 
         success("GraphDECO verified.")
