@@ -56,7 +56,7 @@ class Installer:
 
         if not GRAPHDECO.exists():
             info("Cloning GraphDECO")
-            self.run_command(["git", "clone", GRAPHDECO_REPO, str(GRAPHDECO)])
+            self.run_command(["git", "clone", GRAPHDECO_REPO, str(GRAPHDECO), "--recursive"])
             success("GraphDECO cloned successfully.")
 
         else:
@@ -70,19 +70,22 @@ class Installer:
 
     def install_graphdeco_requirements(self):
 
-        info("Installing GraphDECO requirements...")
+        info("Installing GraphDECO Python dependencies...")
 
-        self.run_command(
-            [
-                "pip",
-                "install",
-                "-r",
-                "requirements.txt"
-            ],
-            cwd=GRAPHDECO
-        )
+        packages = [
+            "plyfile",
+            "tqdm",
+            "opencv-python",
+            "joblib"
+        ]
 
-        success("GraphDECO requirements installed.")
+        self.run_command([
+            "pip",
+            "install",
+            *packages
+        ])
+
+        success("Python dependencies installed.")
 
     def verify_command(self, command):
 
