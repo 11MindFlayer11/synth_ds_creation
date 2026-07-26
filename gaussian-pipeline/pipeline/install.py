@@ -34,4 +34,33 @@ class Installer:
         info ("Checking Environment...")
         self.detect_runtime()
         self.detect_gpu()   
+        self.clone_graphdeco()
+        self.checkout_graphdeco()
         self.summary()
+
+    def run_command(self, command, cwd=None):
+
+        result = subprocess.run(
+            command, cwd=cwd, text=True, capture_output=True
+        )
+        if result.returncode!=0:
+            raise RuntimeError(result.stderr)
+
+        return result.stdout.strip()
+
+    def clone_graphdeco(self):
+        info("Checking GraphDECO repository...")
+
+        if not GRAPHDECO.exists():
+            info("Cloning GraphDECO")
+            self.run_command(["git", "clone", GRAPHDECO_REPO, str(GRAPHDECO)])
+            success("GraphDECO cloned successfully.")
+
+        else:
+            success("Repo already exists")
+
+    def checkout_graphdeco(self):
+        info("Checking out GraphDECO commit...")
+        self.run_command(["git", "fetch"], cwd=GRAPHDECO)
+        self.run_command(["git", "checkout", GRAPHDECO_COMMIT], cwd=GRAPHDECO)
+        success("GraphDECO commit checked out successfully.")
