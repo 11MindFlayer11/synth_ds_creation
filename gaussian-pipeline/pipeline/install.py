@@ -46,7 +46,7 @@ class Installer:
     def run_command(self, command, cwd=None):
 
         result = subprocess.run(
-            command, cwd=cwd, check=True
+            command, cwd=cwd, check=True, capture_output=True, text=True
         )
         if result.returncode!=0:
             raise RuntimeError(result.stderr)
