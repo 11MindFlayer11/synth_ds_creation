@@ -3,12 +3,14 @@ import subprocess
 import torch
 
 from pipeline.logger import info, success, warning, error
-from pipeline.config import GRAPHDECO, GRAPHDECO_REPO, GRAPHDECO_COMMIT
+from pipeline.config import GRAPHDECO, GRAPHDECO_REPO, GRAPHDECO_COMMIT, ROOT
+from pipeline.checkpoint import Checkpoint
 
 class Installer:
     def __init__(self):
         self.runtime = None
         self.gpu_name = None
+        self.checkpoint = Checkpoint(ROOT)
 
     def detect_runtime(self):
 
@@ -39,6 +41,7 @@ class Installer:
         self.install_graphdeco_requirements()
         self.compile_submodules()
         self.verify_graphdeco()
+        self.install_system_packages()
         self.verify_ffmpeg()
         self.verify_colmap()
         self.summary()
@@ -48,8 +51,6 @@ class Installer:
         result = subprocess.run(
             command, cwd=cwd, check=True, capture_output=True, text=True
         )
-        if result.returncode!=0:
-            raise RuntimeError(result.stderr)
 
         return result.stdout.strip()
 
@@ -155,3 +156,22 @@ class Installer:
         ], cwd=GRAPHDECO)
 
         success("GraphDECO verified.")
+
+    def install_system_packages(self):
+
+        info("Installing system packages...")
+
+        self.run_command([
+            "apt-get",
+            "update"
+        ])
+
+        self.run_command([
+            "apt-get",
+            "install",
+            "-y",
+            "ffmpeg",
+            "colmap"
+        ])
+
+        success("System packages installed.")
