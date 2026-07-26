@@ -36,6 +36,9 @@ class Installer:
         self.detect_gpu()   
         self.clone_graphdeco()
         self.checkout_graphdeco()
+        self.install_graphdeco_requirements()
+        self.verify_ffmpeg()
+        self.verify_colmap()
         self.summary()
 
     def run_command(self, command, cwd=None):
@@ -64,3 +67,52 @@ class Installer:
         self.run_command(["git", "fetch"], cwd=GRAPHDECO)
         self.run_command(["git", "checkout", GRAPHDECO_COMMIT], cwd=GRAPHDECO)
         success("GraphDECO commit checked out successfully.")
+
+    def install_graphdeco_requirements(self):
+
+        info("Installing GraphDECO requirements...")
+
+        self.run_command(
+            [
+                "pip",
+                "install",
+                "-r",
+                "requirements.txt"
+            ],
+            cwd=GRAPHDECO
+        )
+
+        success("GraphDECO requirements installed.")
+
+    def verify_command(self, command):
+
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode != 0:
+            raise RuntimeError(f"{command[0]} not found.")
+
+        return result.stdout
+
+    def verify_ffmpeg(self):
+
+        info("Checking FFmpeg...")
+
+        output = self.verify_command(["ffmpeg", "-version"])
+
+        version = output.splitlines()[0]
+
+        success(version)
+
+    def verify_colmap(self):
+
+        info("Checking COLMAP...")
+
+        output = self.verify_command(["colmap", "-h"])
+
+        version = output.splitlines()[0]
+
+        success(version)
