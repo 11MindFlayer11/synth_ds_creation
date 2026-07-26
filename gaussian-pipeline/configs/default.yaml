@@ -1,0 +1,26 @@
+scene:
+  name: scene_001
+
+video:
+  fps: 2
+
+images:
+  extension: ".png"
+  resize: 1600
+
+workspace:
+  clean_after_finish: false
+
+colmap:
+  camera_model: OPENCV
+  matcher: exhaustive
+
+gaussian:
+  iterations: 30000
+  save_every: 5000
+
+render:
+  fps: 30
+
+logging:
+  verbose: true
