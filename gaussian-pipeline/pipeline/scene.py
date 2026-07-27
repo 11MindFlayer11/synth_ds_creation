@@ -1,4 +1,6 @@
 from pipeline.workspace import Workspace
+from pipeline.extract_frames import FrameExtractor
+from pipeline.config import FPS
 
 
 class Scene:
@@ -12,3 +14,13 @@ class Scene:
     def prepare_workspace(self):
 
         self.workspace.prepare()
+
+    def extract_frames(self):
+
+        extractor = FrameExtractor(
+            self.workspace.video,
+            self.workspace.images,
+            FPS
+        )
+
+        extractor.extract()
