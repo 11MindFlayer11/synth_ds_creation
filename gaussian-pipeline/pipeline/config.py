@@ -16,7 +16,7 @@ WORKSPACE = ROOT / "workspace"
 # DATA
 # ==========================================================
 
-DATASET_ROOT = Path("/kaggle/input/datasets/shivanshanand11/scene-001")
+DATASET_ROOT = Path("/kaggle/input/datasets/shivanshanand11")
 
 OUTPUT_ROOT = Path("/kaggle/working/output")
 
