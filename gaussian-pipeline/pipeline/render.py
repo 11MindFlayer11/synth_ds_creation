@@ -18,8 +18,7 @@ class Renderer:
         subprocess.run([
             "python",
             "render.py",
-            "-m", str(model),
-            "--skip_train"
+            "-m", str(model)
         ],
         cwd=GRAPHDECO,
         check=True)
