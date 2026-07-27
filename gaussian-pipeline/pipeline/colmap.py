@@ -51,3 +51,25 @@ class COLMAP:
         ])
 
         success("Feature matching complete.")
+
+    def sparse_reconstruction(self):
+
+        info("Running COLMAP mapper...")
+
+        database = self.workspace.workspace / "database.db"
+
+        images = self.workspace.images
+
+        sparse = self.workspace.sparse
+
+        sparse.mkdir(parents=True, exist_ok=True)
+
+        self.run([
+            "colmap",
+            "mapper",
+            "--database_path", str(database),
+            "--image_path", str(images),
+            "--output_path", str(sparse)
+        ])
+
+        success("Sparse reconstruction complete.")

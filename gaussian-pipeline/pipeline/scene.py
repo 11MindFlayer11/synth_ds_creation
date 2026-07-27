@@ -33,3 +33,7 @@ class Scene:
     def run_feature_matching(self):
 
         self.colmap.feature_matching()
+
+    def run_sparse_reconstruction(self):
+
+        self.colmap.sparse_reconstruction()
