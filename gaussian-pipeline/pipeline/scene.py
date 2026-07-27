@@ -37,3 +37,7 @@ class Scene:
     def run_sparse_reconstruction(self):
 
         self.colmap.sparse_reconstruction()
+
+    def run_image_undistortion(self):
+
+        self.colmap.image_undistortion()

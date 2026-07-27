@@ -73,3 +73,18 @@ class COLMAP:
         ])
 
         success("Sparse reconstruction complete.")
+
+    def image_undistortion(self):
+
+        info("Running COLMAP image undistortion...")
+
+        self.run([
+            "colmap",
+            "image_undistorter",
+            "--image_path", str(self.workspace.images),
+            "--input_path", str(self.workspace.sparse / "0"),
+            "--output_path", str(self.workspace.output),
+            "--output_type", "COLMAP"
+        ])
+
+        success("Image undistortion complete.")
