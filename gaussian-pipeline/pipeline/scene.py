@@ -8,8 +8,9 @@ class Scene:
     def __init__(self, scene_name):
 
         self.name = scene_name
-        self.colmap = COLMAP(self.workspace)
+        
         self.workspace = Workspace(scene_name)
+        self.colmap = COLMAP(self.workspace)
 
     def prepare_workspace(self):
 
