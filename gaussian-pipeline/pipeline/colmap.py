@@ -2,6 +2,7 @@ import subprocess
 import os
 from pipeline.logger import info, success
 from pipeline.config import COLMAP_USE_GPU
+import shutil
 
 
 class COLMAP:
@@ -86,5 +87,21 @@ class COLMAP:
             "--output_path", str(self.workspace.output),
             "--output_type", "COLMAP"
         ])
+
+        sparse = self.workspace.output / "sparse"
+        model0 = sparse / "0"
+
+        model0.mkdir(exist_ok=True)
+
+        for file in [
+            "cameras.bin",
+            "images.bin",
+            "points3D.bin"
+        ]:
+                src = sparse / file
+                dst = model0 / file
+
+                if src.exists():
+                    shutil.move(src, dst)
 
         success("Image undistortion complete.")
