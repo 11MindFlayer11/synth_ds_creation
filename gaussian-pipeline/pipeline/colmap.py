@@ -1,6 +1,7 @@
 import subprocess
-
+import os
 from pipeline.logger import info, success
+from pipeline.config import COLMAP_USE_GPU
 
 
 class COLMAP:
@@ -11,7 +12,11 @@ class COLMAP:
 
     def run(self, command):
 
-        subprocess.run(command, check=True)
+        env = os.environ.copy()
+
+        env["QT_QPA_PLATFORM"] = "offscreen"
+
+        subprocess.run(command, check=True, env=env)
 
     def feature_extraction(self):
 
@@ -26,7 +31,23 @@ class COLMAP:
             "feature_extractor",
             "--database_path", str(database),
             "--image_path", str(images),
-            "--ImageReader.single_camera", "1"
+            "--ImageReader.single_camera", "1",
+            "--SiftExtraction.use_gpu", str(int(COLMAP_USE_GPU))
         ])
 
         success("Feature extraction complete.")
+
+    def feature_matching(self):
+
+        info("Running COLMAP feature matching...")
+
+        database = self.workspace.workspace / "database.db"
+
+        self.run([
+            "colmap",
+            "exhaustive_matcher",
+            "--database_path", str(database),
+            "--SiftMatching.use_gpu", str(int(COLMAP_USE_GPU))
+        ])
+
+        success("Feature matching complete.")

@@ -57,3 +57,6 @@ GRAPHDECO_REPO = "https://github.com/graphdeco-inria/gaussian-splatting.git"
 
 # Temporary until we pin a tested commit
 GRAPHDECO_COMMIT = "main"
+
+
+COLMAP_USE_GPU = False

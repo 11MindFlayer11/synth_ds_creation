@@ -29,3 +29,7 @@ class Scene:
     def run_feature_extraction(self):
 
         self.colmap.feature_extraction()
+
+    def run_feature_matching(self):
+
+        self.colmap.feature_matching()
