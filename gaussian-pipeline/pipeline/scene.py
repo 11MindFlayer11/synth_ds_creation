@@ -3,6 +3,7 @@ from pipeline.extract_frames import FrameExtractor
 from pipeline.config import FPS
 from pipeline.colmap import COLMAP
 from pipeline.train import GaussianTrainer
+from pipeline.render import Renderer
 
 class Scene:
 
@@ -12,6 +13,7 @@ class Scene:
         self.workspace = Workspace(scene_name)
         self.colmap = COLMAP(self.workspace)
         self.trainer = GaussianTrainer(self.workspace)
+        self.renderer = Renderer(self.workspace)
 
     def prepare_workspace(self):
 
@@ -46,3 +48,7 @@ class Scene:
     def train_gaussians(self):
 
         self.trainer.train()
+
+    def render(self):
+
+        self.renderer.render()
