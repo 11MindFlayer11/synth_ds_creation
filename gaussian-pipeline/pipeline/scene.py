@@ -2,15 +2,16 @@ from pipeline.workspace import Workspace
 from pipeline.extract_frames import FrameExtractor
 from pipeline.config import FPS
 from pipeline.colmap import COLMAP
+from pipeline.train import GaussianTrainer
 
 class Scene:
 
     def __init__(self, scene_name):
 
-        self.name = scene_name
-        
+        self.name = scene_name      
         self.workspace = Workspace(scene_name)
         self.colmap = COLMAP(self.workspace)
+        self.trainer = GaussianTrainer(self.workspace)
 
     def prepare_workspace(self):
 
@@ -41,3 +42,7 @@ class Scene:
     def run_image_undistortion(self):
 
         self.colmap.image_undistortion()
+
+    def train_gaussians(self):
+
+        self.trainer.train()
