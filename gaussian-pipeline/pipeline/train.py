@@ -1,32 +1,44 @@
 import subprocess
 from pathlib import Path
+from xml.parsers.expat import model
 
 from pipeline.logger import info, success
-from pipeline.config import GRAPHDECO
+from pipeline.config import GRAPHDECO, TWODGS
 
 
 class GaussianTrainer:
 
-    def __init__(self, workspace):
+    def __init__(self, workspace, method):
 
         self.workspace = workspace
+        self.method = method
+
+        if method == "3dgs":
+            self.repo = GRAPHDECO
+            self.model_path = workspace.gs3d / "output"
+
+        elif method == "2dgs":
+            self.repo = TWODGS
+            self.model_path = workspace.gs2d / "output"
+
+        else:
+            raise ValueError(f"Unknown method: {method}")
+
 
     def train(self):
 
-        info("Starting Gaussian Splatting training...")
+        info(f"Starting {self.method} training...")
 
-        model_path = self.workspace.workspace / "model"
-
-        model_path.mkdir(exist_ok=True)
+        self.model_path.mkdir(parents=True, exist_ok=True)
 
         subprocess.run([
             "python",
             "train.py",
-            "-s", str(self.workspace.output),
-            "-m", str(model_path),
+            "-s", str(self.workspace.workspace),
+            "-m", str(self.model_path),
             "--disable_viewer"
         ],
-        cwd=GRAPHDECO,
+        cwd=self.repo,
         check=True)
 
-        success("Training complete.")
+        success(f"{self.method} training complete.")
