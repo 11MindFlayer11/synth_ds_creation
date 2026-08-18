@@ -36,9 +36,23 @@ class Workspace:
         ]:
             folder.mkdir(parents=True, exist_ok=True)
 
-        source_video = self.dataset / "video.mp4"
+        # Find video
+        videos = list(self.dataset.glob("*.mp4"))
 
-        if not source_video.exists():
-            raise FileNotFoundError(source_video)
+        if not videos:
+            raise FileNotFoundError(
+                f"No .mp4 video found in {self.dataset}"
+            )
+
+        if len(videos) > 1:
+            raise RuntimeError(
+                f"Multiple videos found in {self.dataset}: {videos}"
+            )
+
+        source_video = videos[0]
+
+        info(f"Using video: {source_video.name}")
+
         shutil.copy2(source_video, self.video)
+
         success("Workspace ready.")

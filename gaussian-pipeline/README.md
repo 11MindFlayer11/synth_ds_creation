@@ -89,3 +89,13 @@ synth_ds_creation/
 - Automatic checkpointing
 - Unity integration
 - Dataset generation
+
+
+
+
+
+To add a new method, 
+1. add its installation in the install.py and modify the install_pipeline function
+2. add the repo to config.py
+3. change render, scene, train, workspace
+4. 
