@@ -290,7 +290,7 @@ class Installer:
         info("Installing 2DGS Python dependencies...")
 
         packages = [
-            "open3d==0.18.0",
+            "open3d==0.19.0",
             "mediapy==1.1.2",
             "lpips==0.1.4",
             "scikit-image==0.21.0",
