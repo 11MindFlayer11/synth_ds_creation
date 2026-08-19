@@ -84,7 +84,7 @@ class COLMAP:
             "image_undistorter",
             "--image_path", str(self.workspace.images),
             "--input_path", str(self.workspace.sparse / "0"),
-            "--output_path", str(self.workspace.output),
+            "--output_path", str(self.workspace.dense),
             "--output_type", "COLMAP"
         ])
 
