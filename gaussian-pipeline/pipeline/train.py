@@ -30,14 +30,28 @@ class GaussianTrainer:
         info(f"Starting {self.method} training...")
 
         self.model_path.mkdir(parents=True, exist_ok=True)
-
-        subprocess.run([
+        if self.method=="2dgs":
+            command = [
+            "python",
+            "train.py",
+            "--source_path",
+            str(self.workspace.dense),
+            "--model_path",
+            str(self.model_path),
+            "--iterations",
+            "15000",
+            "--checkpoint_iterations",
+            "7000",
+                    ]
+        elif self.method=="3dgs":
+            command = [
             "python",
             "train.py",
             "-s", str(self.workspace.workspace),
             "-m", str(self.model_path),
             "--disable_viewer"
-        ],
+        ]
+        subprocess.run(command,
         cwd=self.repo,
         check=True)
 

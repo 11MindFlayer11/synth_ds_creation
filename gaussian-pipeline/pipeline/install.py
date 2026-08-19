@@ -293,7 +293,7 @@ class Installer:
             "open3d==0.19.0",
             "mediapy==1.1.2",
             "lpips==0.1.4",
-            "scikit-image==0.21.0",
+            "scikit-image==0.22.0",
             "tqdm==4.66.2",
             "trimesh==4.3.2",
             "plyfile",
@@ -326,6 +326,8 @@ class Installer:
             self.run_command([
                 "pip",
                 "install",
+                "-v",
+                "--no-build-isolation",
                 module
             ], cwd=TWODGS)
 
