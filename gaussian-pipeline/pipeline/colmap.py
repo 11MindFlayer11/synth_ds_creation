@@ -88,7 +88,7 @@ class COLMAP:
             "--output_type", "COLMAP"
         ])
 
-        sparse = self.workspace.output / "sparse"
+        sparse = self.workspace.sparse
         model0 = sparse / "0"
 
         model0.mkdir(exist_ok=True)
