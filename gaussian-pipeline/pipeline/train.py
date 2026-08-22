@@ -47,7 +47,7 @@ class GaussianTrainer:
             command = [
             "python",
             "train.py",
-            "-s", str(self.workspace.workspace),
+            "-s", str(self.workspace.dense),
             "-m", str(self.model_path),
             "--disable_viewer"
         ]

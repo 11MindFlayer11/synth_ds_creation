@@ -79,29 +79,31 @@ class COLMAP:
 
         info("Running COLMAP image undistortion...")
 
-        self.run([
-            "colmap",
-            "image_undistorter",
-            "--image_path", str(self.workspace.images),
-            "--input_path", str(self.workspace.sparse / "0"),
-            "--output_path", str(self.workspace.dense),
-            "--output_type", "COLMAP"
-        ])
-
         sparse = self.workspace.sparse
         model0 = sparse / "0"
 
-        model0.mkdir(exist_ok=True)
+        # Make sure COLMAP model is at sparse/0
+        model0.mkdir(parents=True, exist_ok=True)
 
         for file in [
             "cameras.bin",
             "images.bin",
             "points3D.bin"
         ]:
-                src = sparse / file
-                dst = model0 / file
+            src = sparse / file
+            dst = model0 / file
 
-                if src.exists():
-                    shutil.move(src, dst)
+            if src.exists():
+                shutil.move(src, dst)
+
+        # Now run undistortion using sparse/0
+        self.run([
+            "colmap",
+            "image_undistorter",
+            "--image_path", str(self.workspace.images),
+            "--input_path", str(model0),
+            "--output_path", str(self.workspace.dense),
+            "--output_type", "COLMAP"
+        ])
 
         success("Image undistortion complete.")
